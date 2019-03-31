@@ -1,0 +1,92 @@
+.addAnimation{
+    animation: title-come-in 2s forwards;
+}
+
+@-webkit-keyframes title-come-in{
+    from{
+		transform: translateX(-100%) translateY(0%);
+		opacity: 0;
+	}
+	to{
+		transform: translateX(0) translateY(0);
+		opacity: 1;
+	}
+}
+
+.addAnimationstr{
+    animation: title-come-in1 1s forwards;
+}
+
+@-webkit-keyframes title-come-in1{
+    from{
+		transform: translateX(-100%) translateY(0%);
+		opacity: 0;
+	}
+	to{
+		transform: translateX(0) translateY(0);
+		opacity: 1;
+	}
+}
+
+
+.addAnimationFooter{
+    animation: move-up 1s forwards;
+}
+
+@-webkit-keyframes move-up{
+    from{
+		transform: translateX(0) translateY(100%);
+		opacity: 0;
+	}
+	to{
+		transform: translateX(0) translateY(0);
+		opacity: 1;
+	}
+}
+
+.rotate-icon{
+    animation: rotation 2s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+    from {
+            -webkit-transform: rotate(0deg);
+    }
+    to {
+            -webkit-transform: rotate(360deg);
+    }
+}
+
+
+.aniFooter{
+    animation: move-right 1.5s forwards;
+}
+
+
+@-webkit-keyframes move-right {
+    from{
+		transform: translateX(-100%) translateY(0);
+		opacity: 0;
+	}
+	to{
+		transform: translateX(0) translateY(0);
+		opacity: 1;
+	}
+}
+
+.aniFooter2{
+    animation: move-right2 1.75s forwards;
+}
+
+
+@-webkit-keyframes move-right2 {
+    from{
+		transform: translateX(100%) translateY(0);
+		opacity: 0;
+	}
+	to{
+		transform: translateX(0) translateY(0);
+		opacity: 1;
+	}
+}
+

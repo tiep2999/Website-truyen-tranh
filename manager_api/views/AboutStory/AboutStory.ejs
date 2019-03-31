@@ -1,0 +1,58 @@
+<% include ../header %>
+
+<div class = "back">
+
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-8">
+            <h3 class="mt-3 result-search">One Piece</h3>
+            <div class="row">
+                <div class="col-md-4 mt-md-0 mt-3">
+                        <div class="card text-left">
+                                <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/aa/One_Piece_DVD_18.png/200px-One_Piece_DVD_18.png" alt="">
+                        </div>
+                </div>
+                <div class="col-md-8 mt-md-0 mt-3">
+                        <div class="card text-left info-story">
+                                <h5>Tác giả: Echiro Oda</h5>
+                                <h5>Số tập: 100</h5>
+                                <h5>Thể loại: hành động, phiêu lưu, thiếu nhi</h5>
+                                <a name="" id="" class="btn btn-primary" href="read" role="button">Đọc truyện</a>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+        <h3 class = "mt-5">Truyện đề xuất</h3>
+            <ul class="list-group">
+                <% for(var i = 0; i<8; i++){ %>
+
+                <li class="list-group-item">
+
+                    <a href="#">
+
+                        <img src="http://i.mangaqq.com/ebook/80x105/thu-cung-cua-em-gai-toi-la-ma-kiem_1553933947.jpg"
+                            alt="" class = "story-list">
+                        <a href="/about">One piece</a>
+
+                    </a>
+
+                </li>
+
+
+                <%}%>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
+
+    
+</div>
+
+
+<% include ../footer %>

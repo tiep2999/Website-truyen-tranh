@@ -1,0 +1,18 @@
+<div class="comic-group">
+    <div class="row">
+    <% data.forEach((motphantu)=>{%>
+        <div class="col-md-3 col-sm-6 col-12 mt-2 bestStory">
+            <div class="card card-comic">
+            <a href="./about">
+            <div class = "img-scale">
+            <img src='<%= motphantu.linkStory%>' class="card-img-top" alt="...">
+            </div>
+            </a>    
+                <div class="card-body">
+                    <h5 class="card-title"><%= motphantu.nameStory%></h5>
+                </div>
+            </div>
+        </div>
+        <%})%>
+    </div>
+</div>
