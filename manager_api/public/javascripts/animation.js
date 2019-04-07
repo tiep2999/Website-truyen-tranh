@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var tt = "duoi30";
     window.addEventListener("scroll", function () {
         if (window.pageYOffset > 100) {
-            if (tt == "duoi30") {
+            if (tt == "duoi30" && newStory != null) {
                 newStory.classList.add("aniFooter2");
                 var i = 0;
                 setInterval(() => {
@@ -22,11 +22,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
         else {
-            newStory.classList.remove("aniFooter2");
-            for (var i = 0; i < all_newStory.length; i++) {
-                all_newStory[i].classList.remove("addAnimationstr");
+            if (newStory != null) {
+                newStory.classList.remove("aniFooter2");
+                for (var i = 0; i < all_newStory.length; i++) {
+                    all_newStory[i].classList.remove("addAnimationstr");
+                }
+                tt = "duoi30";
             }
-            tt = "duoi30";
         }
     })
 
@@ -38,30 +40,31 @@ document.addEventListener("DOMContentLoaded", function () {
     var all_bestStory = document.querySelectorAll('.bestStory .card-comic');
     var ttb = "duoi900";
     window.addEventListener("scroll", function () {
-        if (window.pageYOffset > bestStory.offsetTop - 250) {
-            if (ttb == "duoi900") {
-                bestStory.classList.add("aniFooter2");
-                var i = 0;
-                setInterval(() => {
-                    if (i < all_bestStory.length) {
-                        all_bestStory[i].classList.add("addAnimationstr");
-                    }
-                    else {
-                        clearInterval(this);
-                    }
-                    i++;
-                }, 100);
+        if (bestStory != null)
+            if (window.pageYOffset > bestStory.offsetTop - 250) {
+                if (ttb == "duoi900") {
+                    bestStory.classList.add("aniFooter2");
+                    var i = 0;
+                    setInterval(() => {
+                        if (i < all_bestStory.length) {
+                            all_bestStory[i].classList.add("addAnimationstr");
+                        }
+                        else {
+                            clearInterval(this);
+                        }
+                        i++;
+                    }, 100);
 
-                ttb = "tren900";
+                    ttb = "tren900";
+                }
             }
-        }
-        else {
-            bestStory.classList.remove("aniFooter2");
-            for (var i = 0; i < all_bestStory.length; i++) {
-                all_bestStory[i].classList.remove("addAnimationstr");
+            else {
+                bestStory.classList.remove("aniFooter2");
+                for (var i = 0; i < all_bestStory.length; i++) {
+                    all_bestStory[i].classList.remove("addAnimationstr");
+                }
+                ttb = "duoi900";
             }
-            ttb = "duoi900";
-        }
     })
 
     //animation for footer

@@ -9,30 +9,17 @@
         </tr>
         </thead>
         <tbody>
+        <% data.forEach((motphantu)=>{ %>
         <tr>
-            <td>John</td>
+            <td><%= motphantu.nameStory %></td>
             <td>
-            <a name="" id="" class="btn btn-danger" href="#" role="button">delete</a>
+            <a name="" id="" class="btn btn-danger" href="/delete/<%= motphantu.idStory%>" role="button">delete</a>
             <a name="" id="" class="btn btn-primary" href="insert" role="button">insert</a>
             <a name="" id="" class="btn btn-info" href="#" role="button">detail</a>
             </td>
         </tr>
-        <tr>
-            <td>Mary</td>
-            <td>
-            <a name="" id="" class="btn btn-danger" href="#" role="button">delete</a>
-            <a name="" id="" class="btn btn-primary" href="insert" role="button">insert</a>
-            <a name="" id="" class="btn btn-info" href="#" role="button">detail</a>
-            </td>
-        </tr>
-        <tr>
-            <td>July</td>
-            <td>
-            <a name="" id="" class="btn btn-danger" href="#" role="button">delete</a>
-            <a name="" id="" class="btn btn-primary" href="insert" role="button">insert</a>
-            <a name="" id="" class="btn btn-info" href="#" role="button">detail</a>
-            </td>
-        </tr>
+        <% }) %>
+        
         </tbody>
     </table>
     

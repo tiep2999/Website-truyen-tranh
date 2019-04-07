@@ -59,7 +59,8 @@
 
 
 .aniFooter{
-    animation: move-right 1.5s forwards;
+	animation: move-right 1.5s forwards;
+	text-shadow: 2px 1px 6px #d2d21b;
 }
 
 

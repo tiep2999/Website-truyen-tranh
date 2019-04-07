@@ -1,28 +1,27 @@
 <% include ../header %>
+<link rel="stylesheet" href="/stylesheets/readStory.css">
 
 <div class="back">
     <div class="container" style="text-align: center">
         <h4 class="title-story">One Piece Tập 1</h4>
     </div>
     <div class="container">
-
+    <embed class= "readFont active" src="<%= data[0] %>" type="" width="100%" height="1000px">
+    <% for(var i = 1; i<data.length; i++){ %>
         <div class="row">
 
-            <embed src="images/ttt.pdf" type="" width="100%" height="1000px">
+            <embed class= "readFont" src="<%= data[i] %>" type="" width="100%" height="1000px">
 
         </div>
-
+    <%}%>
     </div>
 
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="col-2 mb-3"><a name="" id="" class="btn btn-primary nut" href="#" role="button">Previous</a></div>
-            <div class="col-2 mb-3"><a name="" id="" class="btn btn-primary nut" href="#" role="button">Next</a></div>
-            <div class="col-4"></div>
-        </div>
+    <div class="container mt-3 twoButton" style = "width: 25%;">
+            <a name="" id="" class="btn btn-primary nut btn1" role="button">Previous</a>
+            <a name="" id="" class="btn btn-primary nut btn2" role="button">Next</a>
     </div>
-
 </div>
+
+<script src = "/javascripts/ReadStory.js"></script>
 
 <% include ../footer %>
