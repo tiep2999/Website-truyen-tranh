@@ -90,6 +90,10 @@ img.card-img-top {
     max-height: 300px;
 }
 
+img.imgAbout{
+    height: 300px;
+}
+
 .img-scale{
 	overflow: hidden;
 }
