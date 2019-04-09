@@ -36,6 +36,16 @@ body::-webkit-scrollbar-track {
 	font-size: initial;
 }
 
+
+a.dropdown-item.typeStory:hover {
+	background: #1696f9;
+}
+
+.dropdown-menu.show {
+    background: #cfd8de;
+}
+
+
 .title-story{
 	padding: 14px;
 	font-weight: bold;
@@ -80,6 +90,10 @@ img.card-img-top {
     max-height: 300px;
 }
 
+img.imgAbout{
+    height: 300px;
+}
+
 .img-scale{
 	overflow: hidden;
 }
@@ -113,6 +127,12 @@ img.story-list {
 }
 .nut{
 	min-width: 100px;
+	margin-bottom: 20px;
+}
+
+.container.mt-3.twoButton {
+    display: flex;
+    justify-content: space-around;
 }
 
 .footer {

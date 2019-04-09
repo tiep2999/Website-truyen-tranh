@@ -1,28 +1,28 @@
 <% include ../header %>
+<link rel="stylesheet" href="/stylesheets/readStory.css">
 
 <div class="back">
     <div class="container" style="text-align: center">
-        <h4 class="title-story">One Piece Tập 1</h4>
+        <h4 class="title-story"><%= data.nameStory%></h4>
     </div>
     <div class="container">
-
         <div class="row">
 
-            <embed src="images/ttt.pdf" type="" width="100%" height="1000px">
+            <embed src="<%= data.ImgStory%>" type="application/pdf" width="100%" height="1000px">
 
-        </div>
-
-    </div>
-
-    <div class="container mt-3">
-        <div class="row">
-            <div class="col-4"></div>
-            <div class="col-2 mb-3"><a name="" id="" class="btn btn-primary nut" href="#" role="button">Previous</a></div>
-            <div class="col-2 mb-3"><a name="" id="" class="btn btn-primary nut" href="#" role="button">Next</a></div>
-            <div class="col-4"></div>
         </div>
     </div>
 
+    <div class="container mt-3 twoButton" style = "width: 25%;">
+            <% if(len>0){ %>
+            <a name="" id="" class="btn btn-primary nut btn1" role="button" href = "/read/previous" >Previous</a>
+            <% } %>
+            <% if(len<max-1){ %>
+            <a name="" id="" class="btn btn-primary nut btn2" role="button" href = "/read/next" >Next</a>
+            <% } %>
+    </div>
 </div>
+
+<script src = "/javascripts/ReadStory.js"></script>
 
 <% include ../footer %>
