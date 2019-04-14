@@ -14,6 +14,9 @@
    <link rel="stylesheet" href="/stylesheets/Search.css">
    <link rel="stylesheet" href="/stylesheets/admin.css">
    <link rel="stylesheet" href="/stylesheets/animation.css">
+   <link rel = "icon" href =  
+"https://www.geeksforgeeks.org/wp-content/uploads/gfg_200X200.png" 
+        type = "image/x-icon"> 
 </head>
 
 <body>
@@ -42,6 +45,21 @@
                      <a class="dropdown-item typeStory" href="#">Harem</a>
                   </div>
                </li>
+               <% if(accessAbility != "admin" && accessAbility != "user"){ %>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/login">Đăng nhập</a>
+                  </li>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/logup">Đăng kí</a>
+                  </li>
+               <%}%>
+
+               <% if(accessAbility != "awesome"){ %>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/logout">Log out</a>
+                  </li>
+               <%}%>
+
             </ul>
             <form class="form-inline my-2 my-lg-0">
                <input class="form-control mr-sm-2" type="text" placeholder="Search">
