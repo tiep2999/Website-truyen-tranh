@@ -96,6 +96,7 @@ img.imgAbout{
 
 .img-scale{
 	overflow: hidden;
+	min-height: 300px;
 }
 
 img.story-list {
@@ -142,6 +143,6 @@ img.story-list {
 	margin-bottom: 0px;
 	padding: 3%;
 	border-radius: unset;
-	opacity: 0;
+	overflow-x: hidden;
 }
 

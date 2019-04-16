@@ -8,22 +8,18 @@
         <div class="col-8">
             <h3 class="mt-3 result-search">Kết quả tìm kiếm</h3>
             <ul class="list-group">
-                <% for(var i = 0; i<8; i++){ %>
+                <% data.forEach((motsp)=>{ %>
 
                 <li class="list-group-item">
 
-                    <a href="#">
-
-                        <img src="http://i.mangaqq.com/ebook/80x105/thu-cung-cua-em-gai-toi-la-ma-kiem_1553933947.jpg"
+                        <img class = "imgSearch" src="<%= motsp.avatarStory %>"
                             alt="">
-                        <a href="">One piece</a>
-
-                    </a>
+                        <a href="/about/<%= motsp.idStory %>"><%= motsp.nameStory %></a>
 
                 </li>
 
 
-                <%}%>
+                <%})%>
         </ul>
         </div>
 
