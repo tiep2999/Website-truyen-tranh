@@ -14,8 +14,10 @@ const con = mysql.createConnection({
 //process upload where
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploadFile');
-    // cb(null, './upload2')
+    if (file.mimetype == 'image/jpeg' || file.mimetype == 'image/jpg' || file.mimetype == 'image/png')
+      cb(null, './public/images');
+    else
+      cb(null, './uploadFile');
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + '-' + file.originalname)
@@ -77,28 +79,37 @@ router.get('/read/previous', function (req, res, next) {
 
 //delete story 
 router.get('/delete/:id', function (req, res, next) {
-  if (accessAbility = "admin") {
+  if (accessAbility == "admin") {
     var idDel = req.params.id;
 
-    con.query("delete from Story where idStory = ?;", idDel, function (err, results) {
-      res.redirect('/admin');
+    con.query("delete from detailStoryChap where idStory = ?;", idDel, function (err, results) {
+      con.query("delete from Story where idStory = ?;", idDel, function (err, results) {
+        res.redirect('/allStory');
+      });
     });
+
   }
 
 });
 
+
+//insert chap for story 
 router.get('/insert', function (req, res, next) {
-  res.render('./Admin/insert', { accessAbility: accessAbility });
+  if (accessAbility == 'admin')
+    res.render('./Admin/insert', { accessAbility: accessAbility });
+  else {
+    res.send('cần quyền truy cập admin')
+  }
 });
 
 router.post('/uploadfile', upload.any(), function (req, res, next) {
 
   var str = req.files[0].path;
   str = str.split('/');
-  str = '/read/next/'+ str[1];
+  str = '/read/next/' + str[1];
   image.push(str);
-  console.log(image);
   res.status(200).send(req.files);
+
 });
 
 router.post('/upInfo', function (req, res, next) {
@@ -133,8 +144,106 @@ router.post('/upInfo', function (req, res, next) {
     }
   })
 
+  image = [];
+
 
 });
+
+
+//insert new story
+router.get('/insertNewStory', function (req, res, next) {
+  if (accessAbility == 'admin')
+    res.render('./Admin/insertNewStory', { accessAbility: accessAbility });
+  else {
+    res.send('cần quyền truy cập admin')
+  }
+});
+
+router.post('/uploadimage', upload.any(), function (req, res, next) {
+
+  var str = req.files[0].path;
+  str = str.split('/');
+  str = '/images/' + str[2];
+  image.push(str);
+  res.status(200).send(req.files);
+
+});
+
+router.post('/upInfoNewStory', function (req, res, next) {
+
+  var Story = {
+    'name': req.body.nameNewStory,
+    'numchap': req.body.numchap,
+    'author': req.body.author,
+    'image': image[0]
+  }
+
+  var sql2 = "insert into Story (nameStory,numChap,author,avatarStory) values (?,?,?,?)";
+
+  con.query(sql2, [Story.name, Story.numchap, Story.author, Story.image], function (err, results) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.redirect('/allStory');
+    }
+  });
+  console.log(Story);
+
+  image = [];
+
+
+});
+
+//detail story 
+
+router.get('/detail/:id', function (req, res, next) {
+  if (accessAbility == 'admin') {
+    var idDetail = req.params.id;
+    var sql = "select * from Story where idStory = ?";
+
+    con.query(sql, idDetail, function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        res.render('./Admin/Detail', {
+          accessAbility: accessAbility,
+          data: results
+        });
+      }
+    });
+  }
+  else {
+    res.send('cần quyền truy cập admin')
+  }
+});
+
+router.post('/detail/:id', function (req, res, next) {
+  var idDetail = req.params.id;
+
+  var Story = {
+    'name': req.body.name,
+    'author': req.body.author,
+    'numChap': req.body.numChap
+  }
+
+  var sql = "UPDATE Story SET nameStory = ?, author = ?, numChap = ? WHERE idStory = ?";
+  con.query(sql, [Story.name, Story.author, Story.numChap, idDetail], function (err, results) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      res.redirect('/allStory');
+    }
+  });
+
+
+});
+
+
+
+
 
 router.get('/', function (req, res, next) {
   nextStory = [];
@@ -153,9 +262,28 @@ router.get('/', function (req, res, next) {
 
 });
 
-router.get('/search', function (req, res, next) {
 
-  res.render('./SearchStory/Search');
+router.post('/search', function (req, res, next) {
+
+  var temp = req.body.searchstr;
+
+  var strSearch = '';
+  for (var i = 0; i < temp.length; i++) {
+    strSearch += '%' + temp[i];
+  }
+  strSearch = strSearch + '%';
+
+  var sql = "select * from Story where nameStory like ?";
+  con.query(sql, [strSearch], function (err, results) {
+    if (err)
+      throw err;
+    else
+      res.render('./SearchStory/Search', {
+        data: results,
+        accessAbility: accessAbility
+      })
+    console.log(results);
+  });
 
 });
 
@@ -230,6 +358,29 @@ router.post('/loginform', function (req, res, next) {
 
 });
 
+router.get('/allStory', function (req, res, next) {
+  if (accessAbility == 'admin') {
+    var sql = "select * from Story";
+    con.query(sql, function (err, resultsStory) {
+      if (err)
+        throw err;
+      else {
+        setTimeout(() => {
+          accessAbility = "admin";
+          res.render('./Admin/AllStory', {
+            data: resultsStory,
+            accessAbility: accessAbility
+          });
+        }, 0)
+      }
+    });
+  }
+  else{
+    res.send('cần quyền truy cập admin');
+  }
+});
+
+
 router.get('/logout', function (req, res, next) {
 
   accessAbility = "awesome";
@@ -244,22 +395,5 @@ router.get('/logup', function (req, res, next) {
   });
 
 });
-
-// router.get('/xemsp', function (req, res, next) {
-
-//   var sql = "select * from detailStoryChap";
-//   con.query(sql, function (err, results) {
-//     if (err)
-//       throw err;
-//     else {
-//       res.render('test', {
-//         data: results,
-//         accessAbility: accessAbility
-//       })
-//       console.log(results);
-//     }
-//   });
-
-// });
 
 module.exports = router;
