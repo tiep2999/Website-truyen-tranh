@@ -15,7 +15,7 @@
    <link rel="stylesheet" href="/stylesheets/admin.css">
    <link rel="stylesheet" href="/stylesheets/animation.css">
    <link rel="icon" href="http://www.newdesignfile.com/postpic/2015/10/free-book-icon_103772.png" type="image/x-icon">
-
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    <div id="fb-root"></div>
    <script async defer crossorigin="anonymous"
       src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.2&appId=2023817554589925&autoLogAppEvents=1">
@@ -65,7 +65,6 @@
                      aria-haspopup="true" aria-expanded="false">Insert</a>
                   <div class="dropdown-menu" aria-labelledby="dropdownId">
                      <a class="dropdown-item typeStory" href="/insertNewStory">New Story</a>
-                     <a class="dropdown-item typeStory" href="/insert">Chap for Story</a>
                   </div>
                </li>
                <li class="nav-item">
@@ -75,6 +74,11 @@
 
 
                <% if(accessAbility != "awesome"){ %>
+               <% if(accessAbility == 'user' ){ %>
+                  <li class="nav-item">
+                     <a class="nav-link" href="/profileUser">Your Profile</a>
+                  </li>
+               <% } %>
                <li class="nav-item">
                   <a class="nav-link" href="/logout">Log out</a>
                </li>

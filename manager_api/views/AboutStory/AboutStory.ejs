@@ -19,6 +19,16 @@
                                 <h5>Tác giả: <%= data[0].author%></h5>
                                 <h5>Số tập: <%= data[0].numChap%></h5>
                                 <h5>Thể loại: hành động, phiêu lưu, thiếu nhi</h5>
+                            <% if(accessAbility == 'user'){ %>
+                                <div class = 'LikeAndFollow'>
+                                    <a name="" id="" class="btn btn-danger mb-2" href="/like/<%= data[0].idStory %>" role="button">
+                                    <% if(checkLike.length){ %>
+                                        <i class="fa fa-heart"></i>
+                                    <% } %>
+                                    Like
+                                    </a>
+                                </div>
+                            <% } %>
                                 <a name="" id="" class="btn btn-primary" href="/read/<%= data[0].idStory%>.html" role="button">Đọc truyện</a>
                         </div>
                 </div>
@@ -32,7 +42,6 @@
                 <% for(var i = 0; i<8; i++){ %>
 
                 <li class="list-group-item">
-
                     <a href="#">
 
                         <img src="http://i.mangaqq.com/ebook/80x105/thu-cung-cua-em-gai-toi-la-ma-kiem_1553933947.jpg"
