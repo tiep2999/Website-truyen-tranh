@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var menu1 = document.querySelector(".menu");
     var logo = document.querySelector(".menu a");
 	window.addEventListener("scroll",function(){
-		if(window.pageYOffset>40){
+		if(window.pageYOffset>0){
 			if(trangthai=="duoi300"){
                 menu.classList.add("scollPage");
                 menu1.classList.add("menuMin");

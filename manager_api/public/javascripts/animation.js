@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("scroll", function () {
         if (window.pageYOffset > footer.offsetTop - 600) {
             if (ttfooter == "duoifooter") {
-                //footer.classList.add("addAnimationFooter");
+                footer.classList.add("addAnimationFooter");
                 for (var i = 0; i < title.length; i++)
                     title[i].classList.add('aniFooter');
                 for (var i = 0; i < list.length; i++)
@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
         else {
-            //footer.classList.remove("addAnimationFooter");
+            footer.classList.remove("addAnimationFooter");
             for (var i = 0; i < title.length; i++)
                 title[i].classList.remove('aniFooter');
             for (var i = 0; i < list.length; i++)

@@ -3,11 +3,6 @@ body,html{
 	height: 100%;
 }
 
-*{
-	margin:0;
-	padding: 0;
-}
-
 .back {
     background: #80808066;
 }
@@ -95,13 +90,8 @@ img.card-img-top {
     max-height: 300px;
 }
 
-img.imgAbout{
-    height: 300px;
-}
-
 .img-scale{
 	overflow: hidden;
-	min-height: 300px;
 }
 
 img.story-list {
@@ -148,6 +138,6 @@ img.story-list {
 	margin-bottom: 0px;
 	padding: 3%;
 	border-radius: unset;
-	overflow-x: hidden;
+	opacity: 0;
 }
 

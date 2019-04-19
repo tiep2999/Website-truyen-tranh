@@ -14,20 +14,12 @@
    <link rel="stylesheet" href="/stylesheets/Search.css">
    <link rel="stylesheet" href="/stylesheets/admin.css">
    <link rel="stylesheet" href="/stylesheets/animation.css">
-   <link rel="icon" href="http://www.newdesignfile.com/postpic/2015/10/free-book-icon_103772.png" type="image/x-icon">
-   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   <div id="fb-root"></div>
-   <script async defer crossorigin="anonymous"
-      src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v3.2&appId=2023817554589925&autoLogAppEvents=1">
-   </script>
-
 </head>
 
 <body>
    <div class="container-fluid haveMenu">
       <nav class="navbar navbar-expand-sm navbar-light bg-light menu">
-         <span><img class="rotate-icon" src="images/icon2.svg" alt=""
-               style="height: 50px; width: 50px ; margin-right: 5px"></span>
+         <span><img class = "rotate-icon" src="images/icon2.svg" alt="" style = "height: 50px; width: 50px ; margin-right: 5px"></span>
          <a class="navbar-brand" href="/">MyStory</a>
          <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId"
             aria-controls="collapsibleNavId" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,43 +42,10 @@
                      <a class="dropdown-item typeStory" href="#">Harem</a>
                   </div>
                </li>
-               <% if(accessAbility != "admin" && accessAbility != "user"){ %>
-               <li class="nav-item">
-                  <a class="nav-link" href="/login">Đăng nhập</a>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="/logup">Đăng kí</a>
-               </li>
-               <%}%>
-
-                <% if(accessAbility === "admin"){ %>
-               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-toggle="dropdown"
-                     aria-haspopup="true" aria-expanded="false">Insert</a>
-                  <div class="dropdown-menu" aria-labelledby="dropdownId">
-                     <a class="dropdown-item typeStory" href="/insertNewStory">New Story</a>
-                  </div>
-               </li>
-               <li class="nav-item">
-                  <a class="nav-link" href="/allStory">All-Story</a>
-               </li>
-               <%}%>
-
-
-               <% if(accessAbility != "awesome"){ %>
-               <% if(accessAbility == 'user' ){ %>
-                  <li class="nav-item">
-                     <a class="nav-link" href="/profileUser">Your Profile</a>
-                  </li>
-               <% } %>
-               <li class="nav-item">
-                  <a class="nav-link" href="/logout">Log out</a>
-               </li>
-               <%}%>
             </ul>
-            <form class="form-inline my-2 my-lg-0" action = "/search" method = "post">
-               <input type="text" name = "searchstr" class="form-control" aria-describedby="emailHelp" placeholder="NameStory">
-               <button type="submit" name="" id="" class="btn btn-primary">search</button>
+            <form class="form-inline my-2 my-lg-0">
+               <input class="form-control mr-sm-2" type="text" placeholder="Search">
+               <a name="" id="" class="btn btn-success my-2 my-sm-0" href="/search" role="button">Search</a>
             </form>
          </div>
       </nav>
