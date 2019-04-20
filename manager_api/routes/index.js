@@ -32,6 +32,9 @@ var accessAbility = "awesome";
 var nextAndPre = 0;
 var nextStory = new Array();
 
+var OneUser;
+var propose;
+
 router.get('/read/:id.html', function (req, res, next) {
 
   var idRead = req.params.id;
@@ -175,12 +178,13 @@ router.post('/upInfoNewStory', function (req, res, next) {
     'name': req.body.nameNewStory,
     'numchap': req.body.numchap,
     'author': req.body.author,
-    'image': image[0]
+    'image': image[0],
+    'type': req.body.typestory
   }
 
-  var sql2 = "insert into Story (nameStory,numChap,author,avatarStory) values (?,?,?,?)";
+  var sql2 = "insert into Story (nameStory,numChap,author,avatarStory,typeStory) values (?,?,?,?,?)";
 
-  con.query(sql2, [Story.name, Story.numchap, Story.author, Story.image], function (err, results) {
+  con.query(sql2, [Story.name, Story.numchap, Story.author, Story.image,Story.type], function (err, results) {
     if (err) {
       console.log(err);
     }
@@ -225,11 +229,12 @@ router.post('/detail/:id', function (req, res, next) {
   var Story = {
     'name': req.body.name,
     'author': req.body.author,
-    'numChap': req.body.numChap
+    'numChap': req.body.numChap,
+    'type':req.body.typestory
   }
 
-  var sql = "UPDATE Story SET nameStory = ?, author = ?, numChap = ? WHERE idStory = ?";
-  con.query(sql, [Story.name, Story.author, Story.numChap, idDetail], function (err, results) {
+  var sql = "UPDATE Story SET nameStory = ?, author = ?, numChap = ?,typeStory = ? WHERE idStory = ?";
+  con.query(sql, [Story.name, Story.author, Story.numChap,Story.type, idDetail], function (err, results) {
     if (err) {
       console.log(err);
     }
@@ -241,10 +246,7 @@ router.post('/detail/:id', function (req, res, next) {
 
 });
 
-
-
-
-
+//Home page router
 router.get('/', function (req, res, next) {
   nextStory = [];
   nextAndPre = 0;
@@ -263,6 +265,7 @@ router.get('/', function (req, res, next) {
 });
 
 
+var searchStory;
 router.post('/search', function (req, res, next) {
 
   var temp = req.body.searchstr;
@@ -277,16 +280,29 @@ router.post('/search', function (req, res, next) {
   con.query(sql, [strSearch], function (err, results) {
     if (err)
       throw err;
-    else
-      res.render('./SearchStory/Search', {
-        data: results,
-        accessAbility: accessAbility
-      })
-    console.log(results);
+    else {
+      searchStory = [...results];
+      var sql = 'select * from Story limit 8';
+      con.query(sql, function (err, results) {
+        if (err) {
+          res.send(err);
+        }
+        else {
+          propose = [...results];
+          res.render('./SearchStory/Search', {
+            data: searchStory,
+            accessAbility: accessAbility,
+            propose: propose
+          });
+        }
+      });
+    }
   });
 
 });
 
+
+var about;
 router.get('/about/:id', function (req, res, next) {
 
   var idAbout = req.params.id;
@@ -295,11 +311,51 @@ router.get('/about/:id', function (req, res, next) {
   con.query(sql, idAbout, function (err, results) {
     if (err)
       throw err;
-    else
-      res.render('./AboutStory/AboutStory', {
-        data: results,
-        accessAbility: accessAbility
-      });
+    else {
+      about = [...results];
+      if (accessAbility != 'user') {
+        var sql = 'select * from Story limit 8';
+        con.query(sql, function (err, results) {
+          if (err) {
+            res.send(err);
+          }
+          else {
+            propose = [...results];
+            res.render('./AboutStory/AboutStory', {
+              data: about,
+              accessAbility: accessAbility,
+              user: OneUser,
+              propose: propose
+            });
+          }
+        });
+      }
+      else {
+        var sqlfind = "select * from LikeStory where idUserInfo = ? and idStory = ?";
+        con.query(sqlfind, [OneUser[0].iduserInfo, idAbout], function (err, resultsStory) {
+          if (err)
+            throw err;
+          else {
+            var sql = 'select * from Story limit 8';
+            con.query(sql, function (err, results) {
+              if (err) {
+                res.send(err);
+              }
+              else {
+                propose = [...results];
+                res.render('./AboutStory/AboutStory', {
+                  data: about,
+                  accessAbility: accessAbility,
+                  user: OneUser,
+                  checkLike: resultsStory,
+                  propose: propose
+                });
+              }
+            });
+          }
+        });
+      }
+    }
   });
 
 });
@@ -323,7 +379,6 @@ router.post('/loginform', function (req, res, next) {
   };
   var sql = "select * from userInfo where Email = ? and Password = ?";
   con.query(sql, [user.Email, user.Password], function (err, results) {
-    console.log(results);
     if (err) {
       throw err;
     }
@@ -336,23 +391,39 @@ router.post('/loginform', function (req, res, next) {
           else {
             setTimeout(() => {
               accessAbility = "admin";
+              OneUser = results;
               res.render('./Admin/AllStory', {
                 data: resultsStory,
-                accessAbility: accessAbility
+                accessAbility: accessAbility,
+                user: results
               });
             }, 0)
           }
         });
       }
       if (results[0].iduserInfo != 1) {
-        accessAbility = "user";
-        res.redirect('/');
+        accessAbility = 'user';
+        OneUser = results;
+
+        var sqlstr = 'select * from Story where idStory in ( select idStory from LikeStory where idUserInfo = ? )';
+
+        con.query(sqlstr, [OneUser[0].iduserInfo], function (err, resultsstr) {
+          if (err) {
+            res.send(err);
+          }
+          else {
+            res.render('./User/Profile', {
+              accessAbility: accessAbility,
+              user: OneUser,
+              likeStory: resultsstr
+            });
+          }
+        });
       }
     }
     else {
       res.send("nhap lai");
     }
-    console.log(results);
   });
 
 
@@ -375,15 +446,76 @@ router.get('/allStory', function (req, res, next) {
       }
     });
   }
-  else{
+  else {
     res.send('cần quyền truy cập admin');
   }
 });
 
 
+router.get('/profileUser', function (req, res, next) {
+
+  if (accessAbility == 'user') {
+    var sql = 'select * from Story where idStory in ( select idStory from LikeStory where idUserInfo = ? )';
+
+    con.query(sql, [OneUser[0].iduserInfo], function (err, results) {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        res.render('./User/Profile', {
+          accessAbility: accessAbility,
+          user: OneUser,
+          likeStory: results
+        });
+      }
+    });
+  }
+
+});
+
+router.get('/like/:id', function (req, res, next) {
+
+  if (accessAbility == 'user') {
+    var idStory = parseInt(req.params.id);
+    var sqlcheck = 'select * from LikeStory where idUserInfo = ? and idStory = ?';
+
+    con.query(sqlcheck, [OneUser[0].iduserInfo, idStory], function (err, results) {
+
+      if (err) {
+        res.send(err);
+      }
+      else if (results.length == 0) {
+        var sqlInsert = "insert into LikeStory (idUserInfo,idStory) values (?,?)";
+        con.query(sqlInsert, [OneUser[0].iduserInfo, idStory], function (err, results) {
+          if (err)
+            throw err;
+          else {
+            res.redirect('/about/' + idStory);
+          }
+        });
+      }
+      else {
+        var sqlDel = "delete from LikeStory where idUserInfo = ? and idStory = ? ";
+        con.query(sqlDel, [OneUser[0].iduserInfo, idStory], function (err, results) {
+          if (err)
+            throw err;
+          else {
+            res.redirect('/about/' + idStory);
+          }
+        });
+      }
+
+    });
+  }
+  else {
+    res.send('cần quyền truy cập user');
+  }
+});
+
 router.get('/logout', function (req, res, next) {
 
   accessAbility = "awesome";
+  OneUser = [];
   res.redirect("/")
 
 });
@@ -394,6 +526,42 @@ router.get('/logup', function (req, res, next) {
     accessAbility: accessAbility
   });
 
+});
+
+
+function typeStory(res,str,typeStory){
+  var sql = "select * from Story where typeStory like ?";
+  con.query(sql,[str],function (err, results) {
+      if (err) {
+          res.send(err);
+      }
+      else {
+          res.render('./TypeStory/typeStory',{
+              data:results,
+              accessAbility:accessAbility,
+              typeStory:typeStory
+          });
+      }
+  });
+}
+
+
+router.get('/action', function (req, res, next) {
+  var str = "%h%à%n%h%đ%ộ%n%g%";
+  var typeStory1 = "Hành Động";
+  typeStory(res,str,typeStory1);
+});
+
+router.get('/love', function (req, res, next) {
+  var str = "%t%ì%n%h%y%ê%u%";
+  var typeStory2 = "Tình Yêu";
+  typeStory(res,str,typeStory2);
+});
+
+router.get('/harem', function (req, res, next) {
+  var str = "%h%a%r%e%m%";
+  var typeStory3 = "Harem";
+  typeStory(res,str,typeStory3);
 });
 
 module.exports = router;

@@ -1,0 +1,43 @@
+.Email{
+    margin-bottom: 2%;
+}
+
+.nameUser{
+    margin-top: 2%;
+}
+
+.imageUser {
+    display: flex;
+    padding: 1%;
+}
+
+.imgInfo {
+    margin: 1%;
+    width: 40%;
+}
+
+.infoUser {
+    margin: 1%;
+    width: 60%;
+}
+
+.imageProfile{max-width: 100%; max-height: 100%;}
+
+h1.profileUser {
+    border-bottom: 2px solid red;
+    width: 50%;
+    color: #0033ff;
+}
+
+.storyLike {
+    border-bottom: 2px solid red;
+    width: 15%;
+    text-shadow: 2px 2px 4px yellow;
+    margin-bottom: 4%;
+}
+
+.storyFollow {
+    border-bottom: 2px solid red;
+    width: 15%;
+    text-shadow: 2px 2px 4px yellow;
+}

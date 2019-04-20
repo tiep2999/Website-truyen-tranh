@@ -1,0 +1,45 @@
+<% include ../header %>
+<link rel="stylesheet" href="/stylesheets/Profile.css">
+<div class="back" style="padding: 10%; padding-top: 5%;">
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <h1 class="profileUser"> Profile User </h1>
+                <div class="imageUser">
+                    <div class="imgInfo">
+                        <img class="imageProfile" src="images/icon.png" alt="">
+                    </div>
+                    <div class="infoUser">
+                        <div class="nameUser"> UserName: <b><%= user[0].NameUser %></b></div>
+                        <div class="Email"> Email: <b><%= user[0].Email %></b></div>
+                    </div>
+                </div>
+                <div class="storyLike">
+                    <h2>Story Like</h2>
+                </div>
+                <ul class="list-group">
+                    <% likeStory.forEach((motsp)=>{ %>
+
+                    <li class="list-group-item">
+                        <img class="imgSearch" src="<%= motsp.avatarStory %>" alt="">
+                        <a href="/about/<%= motsp.idStory %>"><%= motsp.nameStory %></a>
+
+                    </li>
+
+                    <%})%>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .footer {
+        margin-top: -7px;
+    }
+</style>
+
+<% include ../footer %>
