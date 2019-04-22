@@ -97,9 +97,36 @@ router.get('/delete/:id', function (req, res, next) {
 
 
 //insert chap for story 
-router.get('/insert', function (req, res, next) {
-  if (accessAbility == 'admin')
-    res.render('./Admin/insert', { accessAbility: accessAbility });
+var StoryInsert;
+router.get('/insert/:id', function (req, res, next) {
+  if (accessAbility == 'admin') {
+    var idInsert = req.params.id;
+    var sql = "select * from Story where idStory = ?";
+
+    con.query(sql, [idInsert], function (err, results) {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        StoryInsert = [...results];
+
+
+        var sqlAvail = "select * from detailStoryChap where idStory = ?";
+        con.query(sqlAvail,[idInsert],function(err,resultAvail){
+          if(err){
+            res.send(err);
+          }
+          else{
+            res.render('./Admin/insert', {
+              accessAbility: accessAbility,
+              StoryInsert: StoryInsert,
+              data:resultAvail
+            });
+          }
+        })
+      }
+    });
+  }
   else {
     res.send('cần quyền truy cập admin')
   }
@@ -184,7 +211,7 @@ router.post('/upInfoNewStory', function (req, res, next) {
 
   var sql2 = "insert into Story (nameStory,numChap,author,avatarStory,typeStory) values (?,?,?,?,?)";
 
-  con.query(sql2, [Story.name, Story.numchap, Story.author, Story.image,Story.type], function (err, results) {
+  con.query(sql2, [Story.name, Story.numchap, Story.author, Story.image, Story.type], function (err, results) {
     if (err) {
       console.log(err);
     }
@@ -200,7 +227,6 @@ router.post('/upInfoNewStory', function (req, res, next) {
 });
 
 //detail story 
-
 router.get('/detail/:id', function (req, res, next) {
   if (accessAbility == 'admin') {
     var idDetail = req.params.id;
@@ -230,11 +256,11 @@ router.post('/detail/:id', function (req, res, next) {
     'name': req.body.name,
     'author': req.body.author,
     'numChap': req.body.numChap,
-    'type':req.body.typestory
+    'type': req.body.typestory
   }
 
   var sql = "UPDATE Story SET nameStory = ?, author = ?, numChap = ?,typeStory = ? WHERE idStory = ?";
-  con.query(sql, [Story.name, Story.author, Story.numChap,Story.type, idDetail], function (err, results) {
+  con.query(sql, [Story.name, Story.author, Story.numChap, Story.type, idDetail], function (err, results) {
     if (err) {
       console.log(err);
     }
@@ -529,19 +555,19 @@ router.get('/logup', function (req, res, next) {
 });
 
 
-function typeStory(res,str,typeStory){
+function typeStory(res, str, typeStory) {
   var sql = "select * from Story where typeStory like ?";
-  con.query(sql,[str],function (err, results) {
-      if (err) {
-          res.send(err);
-      }
-      else {
-          res.render('./TypeStory/typeStory',{
-              data:results,
-              accessAbility:accessAbility,
-              typeStory:typeStory
-          });
-      }
+  con.query(sql, [str], function (err, results) {
+    if (err) {
+      res.send(err);
+    }
+    else {
+      res.render('./TypeStory/typeStory', {
+        data: results,
+        accessAbility: accessAbility,
+        typeStory: typeStory
+      });
+    }
   });
 }
 
@@ -549,19 +575,19 @@ function typeStory(res,str,typeStory){
 router.get('/action', function (req, res, next) {
   var str = "%h%à%n%h%đ%ộ%n%g%";
   var typeStory1 = "Hành Động";
-  typeStory(res,str,typeStory1);
+  typeStory(res, str, typeStory1);
 });
 
 router.get('/love', function (req, res, next) {
   var str = "%t%ì%n%h%y%ê%u%";
   var typeStory2 = "Tình Yêu";
-  typeStory(res,str,typeStory2);
+  typeStory(res, str, typeStory2);
 });
 
 router.get('/harem', function (req, res, next) {
   var str = "%h%a%r%e%m%";
   var typeStory3 = "Harem";
-  typeStory(res,str,typeStory3);
+  typeStory(res, str, typeStory3);
 });
 
 module.exports = router;

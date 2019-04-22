@@ -23,6 +23,8 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/read/next', express.static('uploadFile'));
 app.use('/read/previous', express.static('uploadFile'));
+app.use('/about/images', express.static('uploadImage'));
+app.use('/read/images', express.static('uploadImage'));
 
 
 

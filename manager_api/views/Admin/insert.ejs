@@ -12,11 +12,25 @@
         <div class="form-group">
             <label for="exampleInputEmail1">Name story</label>
             <input type="text" name = "nameStory" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
-                placeholder="NameStory">
+                placeholder="NameStory" value="<%= StoryInsert[0].nameStory %>">
         </div>
+        
+        <label for="avail">Chap đã có:</label>
+        <table class="table">
+          <tbody>
+          <% data.forEach(function(motsp){ %>
+            <tr>
+              <td><%= StoryInsert[0].nameStory %></td>
+              <td><%= motsp.chap%></td>
+            </tr>
+          <%})%>
+          </tbody>
+        </table>
+
+
         <div class="form-group">
             <label for="chap">Chap</label>
-            <input type="number" name = "chap" class="form-control" id="exampleInputPassword1" placeholder="chap">
+            <input type="number" name = "chap" class="form-control" id="exampleInputPassword1" placeholder="chap" %>">
         </div>
         <button type="submit" name="" id="" class="btn btn-primary" style = "margin-bottom: 150px">insert</button>
     </form>
