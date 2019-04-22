@@ -141,6 +141,11 @@ img.story-list {
     justify-content: space-around;
 }
 
+.Pagination {
+    display: flex;
+    justify-content: center;
+}
+
 .footer {
 	background: #040404e3;
 	text-align: center;
