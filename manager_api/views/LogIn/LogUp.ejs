@@ -1,89 +1,115 @@
 <% include ../header %>
 <link rel="stylesheet" href="/stylesheets/Login.css">
 <div class="container">
-<div class="row vertical-center-row">
-   <div class="col-md-6 col-center-block login-widget">
-      <h1 class="text-center">Đăng ký</h1>
-      <div class="form-group">
-         <div>
-            <h6>Username:</h6>
-         </div>
-         <div class="input-group">
-            <div class="input-group-addon"><i class="fa fa-key fa-fw"></i>
+   <div class="row vertical-center-row">
+      <div class="col-md-6 col-center-block login-widget">
+         <h1 class="text-center mb-5">Đăng kí</h1>
+         <form action="/SignInform" method="post">
+            <div class="form-group">
+               <label>UserName</label>
+               <input type="text" name="username" id="user" class="form-control" placeholder="Your Name" aria-describedby="helpId">
+               <div id = 'checkUserName'></div>
             </div>
-            <input class="form-control" placeholder="username" type="text"> 
-         </div>
-      </div>
-      <div class="form-group">
-         <div>
-            <h6>Giới tính:</h6>
-         </div>
-         <label class="radio-inline"><input name="sex" id="inlineCheckbox1" value="male" type="radio">Nam </label>
-         <label class="radio-inline"><input name="sex" id="inlineCheckbox2" value="female" type="radio">Nữ </label>
-      </div>
-      <div>
-         <h6>Ngày sinh</h6>
-         </hr>
-      </div>
-      <div class="row">
-         <div class="col-md-4 col-md-4">
-            <select class="form-group">
-               <option class="text-center" value="Day">Ngày</option>
-            </select>
-         </div>
-         <div class="col-md-4 col-md-4">
-            <select class="form-group">
-               <option value="Month">Tháng</option>
-            </select>
-         </div>
-         <div class="col-md-4 col-md-4">
-            <select class="form-group">
-               <option value="Year">Năm</option>
-            </select>
-         </div>
-      </div>
-      <div class="form-group">
-         <div>
-            <h6>Email:</h6>
-         </div>
-         <div class="input-group">
-            <div class="input-group-addon"><i class="fa fa-user fa-fw"></i>
+            <div class="form-group">
+               <label>Gmail</label>
+               <input type="text" name="gmail" id="gmail" class="form-control" placeholder="user@gmail.com"
+                  aria-describedby="helpId">
+                  <div id = 'checkGmail' ></div>
             </div>
-            <input class="form-control" placeholder="yourmail@gmail.com" type="text"> 
-         </div>
-      </div>
-      <div class="form-group">
-         <div>
-            <h6>Password:</h6>
-         </div>
-         <div class="input-group">
-            <div class="input-group-addon"><i class="fa fa-key fa-fw"></i>
+            <div class="form-group">
+               <label>Password</label>
+               <input type="password" name="passBefore" id="passbefore" class="form-control" placeholder="**********"
+                  aria-describedby="helpId">
             </div>
-            <input class="form-control" placeholder="******" type="password"> 
-         </div>
-      </div>
-      <div class="form-group">
-         <div>
-            <h6>Confirm password:</h6>
-         </div>
-         <div class="input-group">
-            <div class="input-group-addon"><i class="fa fa-key fa-fw"></i>
+            <div class="form-group">
+               <label>Confirm Password</label>
+               <input type="password" name="passConfirm" id="passconfirm" class="form-control" placeholder="**********"
+                  aria-describedby="helpId">
+               <div id = 'checkPass'></div>
             </div>
-            <input class="form-control" placeholder="******" type="confirm password"> 
+
+            <button type="submit" id = 'SignInButton' class="btn btn-primary btn-block">LogIn</button>
+         </form>
+         <div class="form-group">
+            <p>Bạn đã có tài khoản? <strong><a href="/login" class="blue-text">Quay lại đăng nhập</a></strong>
+            </p>
          </div>
-      </div>
-      <div class="form-group">
-         <div class="checkbox"> <label for="c1"><input id="c1" name="cc" type="checkbox">xác nhận</label> 
-         </div>
-      </div>
-      <div class="form-group">
-         <button type="submit" class="btn btn-primary btn-block">Đăng ký</button> 
-         <hr>
-         <p>Bạn đã có tài khoản? <strong><a href="/login" class="blue-text">Quay lại đăng nhập</a></strong>
-         </p>
       </div>
    </div>
 </div>
-</div>
+
 
 <% include ../footer %>
+
+<script>
+   //check cho đăng kí ở username
+   $(document).ready(() => {
+      var username = document.getElementById("user");
+      $('#user').blur(() => {
+         $.ajax({
+            url: '/checkUserName/' + username.value,
+            type: 'GET',
+            dataType: 'text',
+            success: (data) => {
+               var checkUserName = document.getElementById('checkUserName');0
+               if(data == 0){
+                  checkUserName.innerHTML = '<span style = "color:#7FFF00 ">ok</span>';
+               }
+               else{
+                  checkUserName.innerHTML = '<span style = "color:#FF4500 ">Tên đã sử dụng</span>';
+               }
+            },
+         });
+      });
+
+   })
+
+
+   //check cho đăng kí ở Gmail
+   $(document).ready(() => {
+      var gmail = document.getElementById("gmail");
+      $('#gmail').blur(() => {
+         $.ajax({
+            url: '/checkGmail/' + gmail.value,
+            type: 'GET',
+            dataType: 'text',
+            success: (data) => {
+               var checkGmail = document.getElementById('checkGmail');
+               if(data == 0){
+                  checkGmail.innerHTML = '<span style = "color:#7FFF00 ">ok</span>';
+               }
+               else{
+                  checkGmail.innerHTML = '<span style = "color:#FF4500 ">Gmail đã sử dụng</span>';
+               }
+            },
+         });
+      });
+
+   })
+
+   //check cho password và confirm password
+
+   $(document).ready(() => {
+      var passberfore = document.getElementById('passbefore');
+      var passconfirm = document.getElementById('passconfirm');
+      $('#passconfirm').blur(() => {
+         $.ajax({
+            url: '/checkpass/' + passberfore.value + '/' + passconfirm.value,
+            type: 'GET',
+            dataType: 'text',
+            success: (data) => {
+               var checkPass = document.getElementById('checkPass');
+               if(data === 'true'){
+                  checkPass.innerHTML = '<span style = "color:#7FFF00 ">ok</span>'
+               }
+               else{
+                  checkPass.innerHTML = '<span style = "color:#FF4500 ">Không khớp</span>'
+               }
+            },
+         });
+      });
+
+   })
+
+
+</script>
