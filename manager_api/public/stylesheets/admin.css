@@ -1,3 +1,9 @@
 .container.Allstory-admin{
     width: 70%;
 }
+
+.container.all-chap {
+    height: 200px;
+    overflow-y: scroll;
+    background: #79b6c1;
+}

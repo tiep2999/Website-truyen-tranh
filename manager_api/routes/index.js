@@ -95,6 +95,23 @@ router.get('/delete/:id', function (req, res, next) {
 
 });
 
+//delete chap story 
+router.get('/deleteChap/:chap/:idStory', function (req, res, next) {
+  if (accessAbility == "admin") {
+
+    var chap = req.params.chap;
+    var idStory = req.params.idStory;
+
+    con.query("delete from detailStoryChap where chap = ? and idStory = ?;", [chap, idStory], function (err, results) {
+
+      res.redirect('/insert/' + idStory);
+
+    });
+
+  }
+
+});
+
 
 //insert chap for story 
 var StoryInsert;
@@ -112,15 +129,15 @@ router.get('/insert/:id', function (req, res, next) {
 
 
         var sqlAvail = "select * from detailStoryChap where idStory = ?";
-        con.query(sqlAvail,[idInsert],function(err,resultAvail){
-          if(err){
+        con.query(sqlAvail, [idInsert], function (err, resultAvail) {
+          if (err) {
             res.send(err);
           }
-          else{
+          else {
             res.render('./Admin/insert', {
               accessAbility: accessAbility,
               StoryInsert: StoryInsert,
-              data:resultAvail
+              data: resultAvail
             });
           }
         })
@@ -281,14 +298,64 @@ router.get('/', function (req, res, next) {
   con.query(sql, function (err, results) {
     if (err)
       throw err;
-    else
-      res.render('./Home/home', {
-        data: results,
-        accessAbility: accessAbility
-      })
+    else {
+
+      var sqlPage = "select * from Story limit 8"
+
+      con.query(sqlPage, function (err, resultsPage) {
+        if (err) {
+          res.send(err);
+        }
+        else {
+          res.render('./Home/home', {
+            data: resultsPage,
+            accessAbility: accessAbility,
+            numberItem: results.length,
+            Item: 0
+          })
+        }
+      });
+
+    }
   });
 
 });
+
+
+//Home page router
+router.get('/page/:id', function (req, res, next) {
+  nextStory = [];
+  nextAndPre = 0;
+  nextStory = 0;
+  var sql = "select * from Story";
+  var page = parseInt(req.params.id);
+  var changePageInt = 8 * page;
+  con.query(sql, function (err, results) {
+    if (err)
+      throw err;
+    else {
+
+      var sqlPage = "select * from Story limit ?,8";
+
+      con.query(sqlPage, [changePageInt], function (err, resultsPage) {
+        if (err) {
+          res.send(err);
+        }
+        else {
+          res.render('./Home/home', {
+            data: resultsPage,
+            accessAbility: accessAbility,
+            numberItem: results.length,
+            Item: page
+          })
+        }
+      });
+
+    }
+  });
+
+});
+
 
 
 var searchStory;
@@ -546,11 +613,124 @@ router.get('/logout', function (req, res, next) {
 
 });
 
+
+
+var checkUser = false;
+var checkgmail = false;
+var checkpass = false;
+
+router.get('/checkUserName/:username', function (req, res, next) {
+
+  var userName = req.params.username;
+  var sql = "select NameUser from userInfo where NameUser = ?"
+  con.query(sql, [userName], function (err, results) {
+    if (err) {
+      res.send(err);
+    }
+    else {
+      res.send(results.length + '');
+      if (results.length) {
+        checkUser = false;
+      }
+      else {
+        checkUser = true;
+      }
+    }
+  });
+
+});
+
+router.get('/checkGmail/:gmail', function (req, res, next) {
+
+  var Gmail = req.params.gmail;
+  if (Gmail) {
+    var sql = "select Email from userInfo where Email = ?"
+    con.query(sql, [Gmail], function (err, results) {
+      if (err) {
+        res.send(err);
+      }
+      else {
+        res.send(results.length + '');
+
+        if (results.length) {
+          checkgmail = false;
+        }
+        else {
+          checkgmail = true;
+        }
+
+      }
+    });
+  }
+  else {
+    res.send(1 + '');
+  }
+
+});
+
+
+router.get('/checkpass/:before/:confirm', function (req, res, next) {
+
+  var before = req.params.before;
+  var confirm = req.params.confirm;
+
+  if (before === confirm) {
+    res.send('true');
+    checkpass = true;
+  }
+  else {
+    res.send('false');
+    checkpass = false;
+  }
+
+});
+
+
+
 router.get('/logup', function (req, res, next) {
 
   res.render('./LogIn/LogUp', {
     accessAbility: accessAbility
   });
+
+});
+
+router.post('/SignInform', function (req, res, next) {
+
+  if (checkUser === true && checkgmail === true && checkpass === true) {
+    var user = {
+      userName: req.body.username,
+      gmail: req.body.gmail,
+      passwordBefore: req.body.passBefore,
+      passwordConfirm: req.body.passConfirm
+    }
+
+    var sql = "insert into userInfo (Email,Password,NameUser) values (?,?,?);";
+
+    con.query(sql, [user.gmail, user.passwordConfirm, user.userName], function (err, results) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        checkUser = false;
+        checkgmail = false;
+        checkpass = false;
+        res.render('./LogIn/ThanhCong', {
+          accessAbility: accessAbility
+        });
+      }
+    });
+
+  }
+  else {
+    checkUser = false;
+    checkgmail = false;
+    checkpass = false;
+    res.render('./LogIn/KhongThanhCong', {
+      accessAbility: accessAbility
+    });
+  }
+
 
 });
 
